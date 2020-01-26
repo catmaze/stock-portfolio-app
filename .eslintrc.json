@@ -2,6 +2,7 @@
   "root": true,
   "extends": ["fullstack", "prettier", "prettier/react"],
   "rules": {
+    "max-statements": "off",
     "semi": 0
   }
 }

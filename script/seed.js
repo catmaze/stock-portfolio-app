@@ -1,16 +1,88 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Stock, Transaction} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+    User.create({
+      name: 'cody',
+      email: 'cody@email.com',
+      password: '123'
+    })
   ])
+
+  const cody = await User.findOne({
+    where: {
+      email: 'cody@email.com'
+    }
+  })
+
+  let newStock = Stock.build({
+    symbol: 'AAPL',
+    price: '300'
+  })
+  await newStock.save()
+
+  const stock = await Stock.findOne({
+    where: {
+      symbol: 'AAPL'
+    }
+  })
+
+  if (stock === null) {
+    console.error('stock is null, making request')
+  } else {
+    let req = {
+      symbol: 'AAPL',
+      quantity: 4,
+      pps: stock.price
+    }
+
+    let newTransaction = await Transaction.build({
+      userId: cody.id,
+      quantity: req.quantity,
+      symbol: req.symbol,
+      action: 'buy',
+      pps: req.pps,
+      price: req.quantity * stock.price
+    })
+
+    let newTrans = await cody[newTransaction.action](
+      newTransaction.symbol,
+      newTransaction.quantity,
+      newTransaction.pps
+    )
+    if (newTrans) {
+      await newTransaction.save()
+    }
+
+    //sell
+    let secondTransaction = await Transaction.build({
+      userId: cody.id,
+      quantity: 80,
+      symbol: req.symbol,
+      action: 'sell',
+      pps: req.pps,
+      price: req.quantity * stock.price
+    })
+
+    let secondTrans = await cody[secondTransaction.action](
+      secondTransaction.symbol,
+      secondTransaction.quantity,
+      secondTransaction.pps
+    )
+
+    if (secondTrans) {
+      await secondTransaction.save()
+    }
+    await cody.save()
+  }
+
+  // console.log('\ncody :: \n', cody)
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)

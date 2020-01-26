@@ -3,10 +3,21 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const User = db.define('user', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false
+  },
+  balance: {
+    type: Sequelize.INTEGER,
+    defaultValue: 5000
+  },
+  assets: {
+    type: Sequelize.JSON
   },
   password: {
     type: Sequelize.STRING,
@@ -51,6 +62,36 @@ User.encryptPassword = function(plainText, salt) {
     .update(plainText)
     .update(salt)
     .digest('hex')
+}
+
+User.prototype.buy = function(symbol, quantity, pps) {
+  let price = pps * quantity
+
+  if (this.balance < price) {
+    return false
+  } else {
+    this.balance -= price
+    if (this.assets === null || !this.assets.hasOwnProperty(symbol)) {
+      this.assets = {...this.assets, [symbol]: quantity}
+    } else {
+      this.assets[symbol] += quantity
+    }
+    return true
+  }
+}
+
+User.prototype.sell = function(symbol, quantity, pps) {
+  //selling
+  if (this.assets === null || this.assets[symbol] < quantity) {
+    return false
+  } else {
+    this.assets[symbol] -= quantity
+    this.balance += pps * quantity
+    if (this.assets[symbol] === 0) {
+      delete this.assets[symbol]
+    }
+  }
+  return true
 }
 
 /**
