@@ -10,26 +10,28 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} name={name}>
+    <div className="box-container">
+      <h2>{displayName}</h2>
+      <form className="auth-form" onSubmit={handleSubmit} name={name}>
+        {name !== 'register' ? (
+          ''
+        ) : (
+          <div>
+            <input name="userName" type="text" placeholder="Name" />
+          </div>
+        )}
         <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
+          <input name="email" type="text" placeholder="Email" />
         </div>
         <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
+          <input name="password" type="password" placeholder="Password" />
         </div>
         <div>
           <button type="submit">{displayName}</button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
+      {/* <a href="/auth/google">{displayName} with Google</a> */}
     </div>
   )
 }
@@ -44,15 +46,15 @@ const AuthForm = props => {
 const mapLogin = state => {
   return {
     name: 'login',
-    displayName: 'Login',
+    displayName: 'Sign In',
     error: state.user.error
   }
 }
 
-const mapSignup = state => {
+const mapRegister = state => {
   return {
-    name: 'signup',
-    displayName: 'Sign Up',
+    name: 'register',
+    displayName: 'Register',
     error: state.user.error
   }
 }
@@ -70,7 +72,7 @@ const mapDispatch = dispatch => {
 }
 
 export const Login = connect(mapLogin, mapDispatch)(AuthForm)
-export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
+export const Register = connect(mapRegister, mapDispatch)(AuthForm)
 
 /**
  * PROP TYPES

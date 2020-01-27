@@ -19,7 +19,7 @@ router.post('/login', async (req, res, next) => {
   }
 })
 
-router.post('/signup', async (req, res, next) => {
+router.post('/register', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
     req.login(user, err => (err ? next(err) : res.json(user)))
@@ -40,7 +40,7 @@ router.post('/logout', (req, res) => {
 
 router.get('/me', (req, res) => {
   console.log('/auth/me')
-  console.log(req.user)
+  console.log(req)
   res.json(req.user)
 })
 
