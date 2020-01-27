@@ -10,7 +10,7 @@ export const Transactions = props => {
 
   return (
     <div>
-      <h3>Transactions</h3>
+      <h1>Transactions</h1>
     </div>
   )
 }

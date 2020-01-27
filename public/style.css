@@ -33,13 +33,31 @@ form div {
   border: 1px solid black;
   border-radius: 5px;
   box-shadow: 2px 0px 6px 1px #928f8f;
-  margin: 2em auto;
+  margin: 1em;
   max-width: 500px;
+}
+
+/* Portfolio */
+
+/* ListAssets */
+
+.asset-listing {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5em 0;
 }
 
 @media only screen and (min-width: 600px) {
   #navbar {
     display: flex;
     justify-content: flex-end;
+  }
+  .portfolio-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .portfolio-container > div {
+    flex-grow: 1;
   }
 }
