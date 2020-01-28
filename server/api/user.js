@@ -1,5 +1,9 @@
 const router = require('express').Router()
+
 const {User, Transaction, Stock} = require('../db/models')
+
+const quote = require('./stock-quote-util')
+
 module.exports = router
 
 // /api/user/
@@ -15,13 +19,15 @@ router.get('/', async (req, res, next) => {
 
 router.post('/transaction', async (req, res, next) => {
   try {
-    let {symbol, quantity, pps, action} = req.body
-
     let user = await User.findByPk(req.user.id)
 
     if (user === null) {
       res.status(401).send('Unauthorized')
     }
+
+    let {symbol, quantity, action} = req.body
+
+    let {price: pps} = await quote(symbol)
 
     let newTransaction = await Transaction.build({
       userId: user.id,
