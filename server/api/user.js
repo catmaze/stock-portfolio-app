@@ -49,3 +49,21 @@ router.post('/transaction', async (req, res, next) => {
     next(err)
   }
 })
+
+router.get('/history', async (req, res, next) => {
+  try {
+    let user = await User.findByPk(req.user.id)
+
+    if (user === null) {
+      res.status(401).send('Unauthorized')
+    }
+
+    let history = await Transaction.findAll({
+      where: {userId: req.user.id}
+    })
+
+    res.json(history)
+  } catch (err) {
+    next(err)
+  }
+})

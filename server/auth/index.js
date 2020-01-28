@@ -39,8 +39,8 @@ router.post('/logout', (req, res) => {
 })
 
 router.get('/me', (req, res) => {
-  console.log('/auth/me')
-  console.log(req)
+  // console.log('/auth/me')
+  // console.log(req)
   res.json(req.user)
 })
 

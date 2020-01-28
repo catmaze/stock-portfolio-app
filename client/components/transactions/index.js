@@ -1,16 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import {gotHistory} from '../../store/history'
 
 /**
  * COMPONENT
  */
-export const Transactions = props => {
-  const {email} = props
+const Transactions = props => {
+  const {history} = props
+
+  let mapHistory =
+    history.length === 0
+      ? null
+      : history.map(trans => (
+          <div key={trans.id} className="asset-listing box-container">
+            <span>
+              {trans.action.toUpperCase()} ({trans.symbol}) - {trans.quantity}{' '}
+              Shares @ {trans.pps}
+            </span>
+          </div>
+        ))
 
   return (
     <div>
       <h1>Transactions</h1>
+      <div>{mapHistory}</div>
     </div>
   )
 }
@@ -20,15 +34,17 @@ export const Transactions = props => {
  */
 const mapState = state => {
   return {
-    email: state.user.email
+    history: state.history
   }
 }
 
-export default connect(mapState)(Transactions)
+const mapDispatch = dispatch => dispatch(gotHistory())
+
+export default connect(mapState, mapDispatch)(Transactions)
 
 /**
  * PROP TYPES
  */
 Transactions.propTypes = {
-  email: PropTypes.string
+  history: PropTypes.object
 }
