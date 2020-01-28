@@ -15,8 +15,6 @@ router.get('/:symbols', async (req, res, next) => {
       res.status(401).send('Unauthorized')
     }
 
-    console.log('\n\n\nreq.params')
-    console.log(req.params)
     let quotesPromise = req.body.symbols.map(symbol =>
       quote(symbol.toUpperCase())
     )

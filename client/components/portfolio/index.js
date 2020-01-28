@@ -32,7 +32,6 @@ export class Portfolio extends React.Component {
 
   render() {
     const {balance, assets, combinedAssets, pps} = this.state
-    console.log('props', this.state)
     return (
       <div id="portfolio">
         <h1>Portfolio ${combinedAssets}</h1>
