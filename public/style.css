@@ -33,7 +33,7 @@ form div {
   border: 1px solid black;
   border-radius: 5px;
   box-shadow: 2px 0px 6px 1px #928f8f;
-  margin: 1em;
+  margin: 1em auto;
   max-width: 500px;
 }
 
@@ -45,7 +45,7 @@ form div {
   display: flex;
   justify-content: space-around;
   padding: 0.5em 0;
-  margin: 1em auto;
+  margin: 0 auto;
 }
 
 @media only screen and (min-width: 600px) {
@@ -60,5 +60,6 @@ form div {
   }
   .portfolio-container > div {
     flex-grow: 1;
+    margin: 0 1em;
   }
 }
