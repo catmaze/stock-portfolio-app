@@ -9,7 +9,7 @@ async function seed() {
 
   const users = await Promise.all([
     User.create({
-      name: 'cody',
+      name: '',
       email: 'cody@email.com',
       password: '123'
     })
@@ -20,6 +20,8 @@ async function seed() {
       email: 'cody@email.com'
     }
   })
+
+  console.log('cody name is ', cody)
 
   let newStock = Stock.build({
     symbol: 'AAPL',

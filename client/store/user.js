@@ -6,6 +6,7 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const BUY = 'BUY'
 
 /**
  * INITIAL STATE
@@ -17,6 +18,7 @@ const defaultUser = {}
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
+const buy = order => ({type: BUY, order})
 
 /**
  * THUNK CREATORS
@@ -30,10 +32,10 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
+export const auth = (name, email, password, method) => async dispatch => {
   let res
   try {
-    res = await axios.post(`/auth/${method}`, {email, password})
+    res = await axios.post(`/auth/${method}`, {name, email, password})
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }
@@ -43,6 +45,19 @@ export const auth = (email, password, method) => async dispatch => {
     history.push('/portfolio')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
+  }
+}
+
+export const sentBuyOrder = (symbol, quantity) => async dispatch => {
+  try {
+    const res = await axios.post('/user/transaction', {
+      symbol,
+      quantity,
+      action: 'buy'
+    })
+    dispatch(buy(res.data || null))
+  } catch (err) {
+    console.error(err)
   }
 }
 
@@ -65,6 +80,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case BUY:
+      return action.order
     default:
       return state
   }

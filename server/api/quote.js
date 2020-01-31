@@ -7,7 +7,7 @@ module.exports = router
 
 // /api/quote
 
-router.get('/:symbols', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     let user = await User.findByPk(req.user.id)
 
