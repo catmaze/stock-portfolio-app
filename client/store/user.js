@@ -55,9 +55,9 @@ export const sentBuyOrder = (symbol, quantity) => async dispatch => {
       quantity,
       action: 'buy'
     })
-    dispatch(buy(res.data || null))
-  } catch (err) {
-    console.error(err)
+    dispatch(buy(res.data))
+  } catch (error) {
+    return dispatch(getUser({error}))
   }
 }
 
@@ -81,7 +81,7 @@ export default function(state = defaultUser, action) {
     case REMOVE_USER:
       return defaultUser
     case BUY:
-      return action.order
+      return {...state, order: action.order}
     default:
       return state
   }

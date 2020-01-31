@@ -19,8 +19,7 @@ class BuySell extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault()
-    await this.props.sentBuyOrder(this.state.symbol, this.state.quantity)
-    //make dispatch
+    await sentBuyOrder(this.state.symbol, this.state.quantity)
   }
   render() {
     return (
@@ -50,19 +49,18 @@ class BuySell extends React.Component {
           <div>
             <button type="submit">Buy</button>
           </div>
-          {/* {error && error.response && <div> {error.response.data} </div>} */}
         </form>
       </div>
     )
   }
 }
 
-const mapDispatch = dispatch => dispatch(sentBuyOrder(symbol, quantity))
+const mapDispatch = dispatch => dispatch(sentBuyOrder())
 
 export default connect(null, mapDispatch)(BuySell)
 
 BuySell.propTypes = {
   symbol: PropTypes.string,
-  quantity: PropTypes.string,
+  quantity: PropTypes.number,
   error: PropTypes.object
 }
