@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
 import {sentBuyOrder} from '../../store/user'
 
@@ -56,6 +57,12 @@ class BuySell extends React.Component {
   }
 }
 
-const mapDispatch = dispatch => dispatch(sentBuyOrder())
+const mapDispatch = dispatch => dispatch(sentBuyOrder(symbol, quantity))
 
 export default connect(null, mapDispatch)(BuySell)
+
+BuySell.propTypes = {
+  symbol: PropTypes.string,
+  quantity: PropTypes.string,
+  error: PropTypes.object
+}
